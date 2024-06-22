@@ -1,30 +1,8 @@
 import React from "react";
-import "./Main.css";
-import { Link } from "react-router-dom";
-import Footer from "../components/layout/Footer";
-import argentBankLogo from '../img/argentBankLogo.png'
 
-
-function LoginPage () {
+function Form() {
   return (
-    <div>
-      <nav className="main-nav">
-        <Link className="main-nav-logo" to="/">
-          <img
-            className="main-nav-logo-image"
-            src={argentBankLogo}
-            alt="Argent Bank Logo"
-          />
-          <h1 className="sr-only">Argent Bank</h1>
-        </Link>
-        <div>
-          <Link className="main-nav-item" to="/login">
-            <i className="fa fa-user-circle"></i>
-            Sign In
-          </Link>
-        </div>
-      </nav>
-      <main className="main bg-dark">
+    <main className="main bg-dark">
         <section className="sign-in-content">
           <i className="fa fa-user-circle sign-in-icon"></i>
           <h1>Sign In</h1>
@@ -48,9 +26,10 @@ function LoginPage () {
           </form>
         </section>
       </main>
-      <Footer />
-    </div>
-  );
-};
 
-export default LoginPage;
+
+    
+    
+  );
+}
+export default Form;
