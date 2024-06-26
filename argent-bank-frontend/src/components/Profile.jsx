@@ -39,9 +39,7 @@ function Profile() {
           </div>
         </section>
       </main>
-    
-    
-    
+
   );
 }
 export default Profile;
