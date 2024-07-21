@@ -12,7 +12,7 @@ paths:
   /user/login:
     post:
       tags:
-        - User Module
+        - User Modules
       summary: Login
       description: API for Login
       parameters:

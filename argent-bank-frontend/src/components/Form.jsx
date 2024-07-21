@@ -1,43 +1,34 @@
 import React, {useState} from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { loginStart, loginSuccess, loginFailure } from '../features/user/userSlice';
+import { loginUser } from '../features/user/userSlice';
 import { useNavigate } from "react-router-dom";
 
 function Form() {
     const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const user = useSelector((state) => state.user);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { status, error } = useSelector(state => state.user);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Form submitted');
     console.log('Username:', username);
     console.log('Password:', password);
-    dispatch(loginStart());
     try {
-      // Simule une connexion réussie ou échouée
-      const response = await fetch('http://localhost:3001/api/v1/user/login', {
-        method:'POST',
-        headers: {
-            'Content-type': 'application/json',
-            'Accept':'application/json',
-        },
-        body: JSON.stringify({email: username, password: password }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Login failed');
-    }
-    const data = await response.json();
-      dispatch(loginSuccess({ username }));
-      localStorage.setItem('token', data.token);  // Save the token in local storage
-      navigate('/profile');  // Navigate to profile page after successful login
+    await dispatch(loginUser({ email: username, password }));
     } catch (error) {
-      dispatch(loginFailure(error.message));
+      console.error('Error during login:', error);
     }
   };
+  
+    // Rediriger vers /profile si la connexion est réussie
+    React.useEffect(() => {
+      if (status === 'succeeded') {
+        navigate('/profile');
+      }
+    }, [status, navigate]);
 
   return (
     <main className="main bg-dark">
@@ -68,13 +59,14 @@ function Form() {
               <label htmlFor="remember-me">Remember me</label>
             </div>
             <button className="sign-in-button">Sign In</button>
+            {status === 'failed' && (
+            <p className="error-message">{error}</p>
+          )}
           </form>
         </section>
       </main>
 
 
-    
-    
   );
 }
 export default Form;
