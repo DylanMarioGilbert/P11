@@ -12,7 +12,7 @@ paths:
   /user/login:
     post:
       tags:
-        - User Modules
+        - User Module
       summary: Login
       description: API for Login
       parameters:
@@ -101,6 +101,27 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+  /transactions:
+  get:
+  security:
+   - Bearer: []
+  tags:
+   - Transactions module
+  summary: Get all transactions for the current month 
+  description: API to fetch all transactions for the current month, grouped by account
+  produces : -application/json
+  responses:
+  '200':
+  description: List of transactions retrieved successfully
+  schema: 
+  type: array
+  items:
+   $ref: '#/definitions/Transaction'
+  '401':
+   description: Unauthorized
+  '500':
+   description: Internal Server Error
+  
 securityDefinitions:
   Bearer:
     type: apiKey
