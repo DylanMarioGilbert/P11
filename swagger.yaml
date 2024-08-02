@@ -170,17 +170,17 @@ paths:
           description: Unauthorized
         '500':
           description: Internal Server Error
-    put:
+    post:
       security:
         - Bearer: []
       tags:
         - Categories Module
-      summary: Update a category
-      description: API to update an existing category
+      summary: Create a new category
+      description: API to create a new category
       parameters:
         - in: body
           name: body
-          description: Update category attributes
+          description: Category payload
           required: true
           schema:
             $ref: '#/definitions/Category'
@@ -188,13 +188,46 @@ paths:
         - application/json
       responses:
         '200':
-          description: Category updated successfully
+          description: Category created successfully
           schema:
             $ref: '#/definitions/Category'
         '400':
           description: Invalid Fields
         '404':
           description: Category not found
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /categories/{categoryId}:
+    post: 
+      security:
+        - Bearer: []
+      tags:
+        - Categories module
+      summary: Associate a category with a transaction
+      description: API to associate a category with a specific transaction
+      parameters: 
+        - in: path 
+          name: categoryId
+          required: true
+          type: string
+          description: Id of the category
+        - in: body
+          name: body
+          description: Transaction payload to associate with the category
+          required: true
+          schema: 
+            $ref: '#/definitions/TransactionCategoryAssociation'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Category associated with the transaction successfully
+          schema: 
+            $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid Fields
         '401':
           description: Unauthorized
         '500':
@@ -406,18 +439,28 @@ definitions:
       category: 
         type: string
         description: Category of the transaction (e.g., food, transport)
+  TransactionCategoryAssociation:
+    type: object
+    required:
+      - transactionId
+    properties:
+      transactionId:
+        type: string
+        example: txn12345
   Category:
     type: object
+    required:
+      - name
     properties:
       id:
         type: string
-        description: ID of the category
+        example: cat12345
       name:
         type: string
-        description: Name of the category
+        example: Groceries
       description:
         type: string
-        description: Description of the category
+        example: Expenses related to grocery shopping
   Note:
     type: object
     properties:
